@@ -4813,17 +4813,26 @@
             var e = event;
             var swiper = this;
             var params = swiper.params.mousewheel;
+            // console.log('swiped');
             if (swiper.params.virtualTranslate) {
                 if (!swiper.mouseEntered && !params.releaseOnEdges) { return true; }
                 if (e.originalEvent) { e = e.originalEvent; } // jquery fix
                 var delta = 0;
                 var rtlFactor = swiper.rtlTranslate ? -1 : 1;
-
                 var data = Mousewheel.normalize(e);
                 delta = Math.abs(data.pixelX) > Math.abs(data.pixelY) ? -data.pixelX * rtlFactor : -data.pixelY;
-                console.log(delta);
-                if (delta < 0) { swiper.slideNext(); }
-                if (delta > 0) { swiper.slidePrev(); }
+                if (!swiper.params.freeMode) {
+                    if (Utils.now() - swiper.mousewheel.lastScrollTime > 60) {
+                        if (delta < 0) {
+                            swiper.slideNext();
+                        } else if (delta > 0) {
+                            swiper.slidePrev();
+                        }
+                    }
+                    swiper.mousewheel.lastScrollTime = (new win.Date()).getTime();
+                }
+                if (e.preventDefault) { e.preventDefault(); } else { e.returnValue = false; }
+                return false;
             } else {
                 var e = event;
                 var swiper = this;
