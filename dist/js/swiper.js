@@ -4822,7 +4822,7 @@
                 var data = Mousewheel.normalize(e);
                 delta = Math.abs(data.pixelX) > Math.abs(data.pixelY) ? -data.pixelX * rtlFactor : -data.pixelY;
                 if (!swiper.params.freeMode) {
-                    if (Utils.now() - swiper.mousewheel.lastScrollTime > 60) {
+                    if (Utils.now() - swiper.mousewheel.lastScrollTime > 400) {
                         if (delta < 0) {
                             swiper.slideNext();
                         } else if (delta > 0) {
